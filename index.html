@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浙江大学学生成绩单</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin: 0;
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+        /* 工具栏样式 */
+        .toolbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            font-size: 14px;
+        }
+        /* 输入框样式 */
+        .toolbar input[type="number"] {
+            width: 40px;
+            padding: 5px;
+            font-size: 14px;
+            text-align: center;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        /* 按钮样式 */
+        .toolbar button {
+            padding: 5px 10px;
+            font-size: 14px;
+            background-color: #f0f0f0;
+            border: none;
+            color: #333;
+            cursor: pointer;
+            margin-left: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-weight: bold; /* 加粗文本 */
+        }
+        .toolbar button:hover {
+            background-color: #e0e0e0;
+        }
+        /* 放大镜按钮样式 */
+        .search-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px; /* 调整为20px */
+            height: 20px; /* 调整为20px */
+            border: none;
+            background: none;
+            cursor: pointer;
+            position: relative;
+            background-image: url('http://zdbk.zju.edu.cn/jwglxt/js/plugins/pdfjs/web/images/toolbarButton-search.svg');
+            background-size: cover;
+        }
+        /* 缩小按钮样式 */
+        .zoom-out-button {
+            background-image: url('http://zdbk.zju.edu.cn/jwglxt/js/plugins/pdfjs/web/images/toolbarButton-zoomOut.svg');
+            background-size: cover;
+            width: 20px; /* 调整为20px */
+            height: 20px; /* 调整为20px */
+        }
+        /* 放大按钮样式 */
+        .zoom-in-button {
+            background-image: url('http://zdbk.zju.edu.cn/jwglxt/js/plugins/pdfjs/web/images/toolbarButton-zoomIn.svg');
+            background-size: cover;
+            width: 20px; /* 调整为20px */
+            height: 20px; /* 调整为20px */
+        }
+        /* 图片容器 */
+        .container {
+            display: flex;
+            flex-direction: column; /* 纵向排列 */
+            gap: 20px;
+            max-width: 800px;
+            align-items: center;
+            padding: 20px;
+            margin-top: 50px; /* 给顶部工具栏留出空间 */
+            height: calc(100vh - 50px); /* 限制高度以适应工具栏 */
+            overflow-y: auto; /* 允许垂直滚动 */
+        }
+        .image {
+            width: 100%; /* 使图片容器宽度为100% */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative; /* 使得图片可定位 */
+        }
+        .image img {
+            width: 100%;
+            height: auto; /* 保持宽高比 */
+            display: block;
+            max-height: 100%; /* 限制最大高度 */
+            object-fit: contain; /* 保持内容适应 */
+        }
+        .zoom-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* 将按钮居中对齐 */
+            margin-left: auto; /* 右侧自动填充以实现居中 */
+            margin-right: auto; /* 左侧自动填充以实现居中 */
+        }
+        .separator {
+            margin: 0 5px; /* 控制分隔符的左右间距 */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 工具栏 -->
+    <div class="toolbar">
+        <button class="search-button" onclick="searchInDocument()"></button> <!-- 放大镜按钮 -->
+        <input type="number" id="pageInput" value="1" min="1" max="2" />
+        <span>/ 2</span>
+        <div class="zoom-buttons">
+            <button class="zoom-out-button" onclick="zoomOut()"></button> <!-- 减号按钮 -->
+            <span class="separator">|</span>
+            <button class="zoom-in-button" onclick="zoomIn()"></button> <!-- 加号按钮 -->
+        </div>
+    </div>
+
+    <!-- 图片容器 -->
+    <div class="container" id="content">
+        <div class="image" id="image1">
+            <img src="https://s2.loli.net/2024/11/04/hYJLQtnwBVAj3Wp.jpg" alt="图片一">
+        </div>
+        <div class="image" id="image2">
+            <img src="https://s2.loli.net/2024/11/04/1rHvI8mpGAZnQgF.jpg" alt="图片二">
+        </div>
+    </div>
+
+    <!-- JavaScript 脚本 -->
+    <script>
+        let scale = 1; // 当前缩放级别
+
+        function zoomIn() {
+            scale += 0.1; // 增加缩放级别
+            updateScale();
+        }
+
+        function zoomOut() {
+            if (scale > 0.2) { // 防止缩得太小
+                scale -= 0.1; // 减少缩放级别
+                updateScale();
+            }
+        }
+
+        function updateScale() {
+            document.getElementById('content').style.transform = `scale(${scale})`; // 更新内容缩放
+        }
+
+        function searchInDocument() {
+            const query = prompt("请输入要查找的内容：");
+            if (query) {
+                alert(`查找内容：${query}`);
+            }
+        }
+
+        // 初始化页面
+        updateScale(); // 确保初始化时缩放内容
+    </script>
+
+</body>
+</html>
+
