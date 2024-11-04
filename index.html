@@ -19,19 +19,27 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: #fff;
+            background-color: #f0f0f0;
             display: flex;
             align-items: center;
-            padding: 5px 10px;
+            padding: 3px 10px; /* 缩小工具栏的高度 */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             z-index: 1000;
-            font-size: 14px;
+            font-size: 12px; /* 缩小字体 */
+        }
+        /* 工具栏内部内容区域 */
+        .toolbar-content {
+            display: flex;
+            align-items: center;
+            width: 80%; /* 缩小内部内容的宽度 */
+            max-width: 600px; /* 可选：设置最大宽度限制 */
+            font-size: 12px; /* 确保内容区域字体一致 */
         }
         /* 输入框样式 */
         .toolbar input[type="number"] {
             width: 40px;
             padding: 5px;
-            font-size: 14px;
+            font-size: 12px; /* 确保输入框字体一致 */
             text-align: center;
             margin-right: 5px;
             border: 1px solid #ddd;
@@ -39,8 +47,8 @@
         }
         /* 按钮样式 */
         .toolbar button {
-            padding: 5px 10px;
-            font-size: 14px;
+            padding: 3px 8px; /* 缩小按钮的高度 */
+            font-size: 12px; /* 确保按钮字体一致 */
             background-color: #f0f0f0;
             border: none;
             color: #333;
@@ -58,8 +66,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 20px; /* 调整为20px */
-            height: 20px; /* 调整为20px */
+            width: 18px; /* 调整为18px */
+            height: 18px; /* 调整为18px */
             border: none;
             background: none;
             cursor: pointer;
@@ -71,15 +79,15 @@
         .zoom-out-button {
             background-image: url('http://zdbk.zju.edu.cn/jwglxt/js/plugins/pdfjs/web/images/toolbarButton-zoomOut.svg');
             background-size: cover;
-            width: 20px; /* 调整为20px */
-            height: 20px; /* 调整为20px */
+            width: 18px; /* 调整为18px */
+            height: 18px; /* 调整为18px */
         }
         /* 放大按钮样式 */
         .zoom-in-button {
             background-image: url('http://zdbk.zju.edu.cn/jwglxt/js/plugins/pdfjs/web/images/toolbarButton-zoomIn.svg');
             background-size: cover;
-            width: 20px; /* 调整为20px */
-            height: 20px; /* 调整为20px */
+            width: 18px; /* 调整为18px */
+            height: 18px; /* 调整为18px */
         }
         /* 图片容器 */
         .container {
